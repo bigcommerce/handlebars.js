@@ -2,7 +2,32 @@
 
 ## Development
 
-[Commits](https://github.com/wycats/handlebars.js/compare/v3.0.6...master)
+[Commits](https://github.com/wycats/handlebars.js/compare/v3.1.0...master)
+
+## v3.1.0 - June 28, 2019
+
+Backport of security fixes from 4.1.0 and 4.1.2:
+
+- disallow access to the constructor in templates to prevent RCE
+- prevent RCE through the "lookup"-helper
+
+Compatibility notes:
+
+Access to class constructors (i.e. `({}).constructor`) is now prohibited to prevent
+Remote Code Execution. This means that following construct will no work anymore:
+
+```
+class SomeClass {
+}
+SomeClass.staticProperty = 'static'
+var template = Handlebars.compile('{{constructor.staticProperty}}');
+document.getElementById('output').innerHTML = template(new SomeClass());
+// expected: 'static', but now this is empty.
+```
+
+Similarly, access to the constructor of a class through {{lookup obj "constructor" }} is now prohibited.
+
+This kind of access is not the intended use of Handlebars and leads to the vulnerability described in #1495. We will **not** increase the major version, because such use is not intended or documented, and because of the potential impact of the issue (we fear that most people won't use a new major version and the issue may not be resolved on many systems).
 
 ## v3.0.6 - January 2nd, 2019
 Chore:

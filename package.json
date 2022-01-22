@@ -21,7 +21,7 @@
     "node": ">=0.4.7"
   },
   "dependencies": {
-    "neo-async": "^2.6.0",
+    "neo-async": "^2.6.2",
     "source-map": "^0.6.1",
     "yargs": "^3.32.0"
   },
